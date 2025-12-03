@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>UNKNOWNS DECRYPT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -24,11 +25,12 @@
     }
   </style>
 </head>
+
 <body>
   <div class="msg" id="msg">INITIALIZING UNKNOWNS ENDING...</div>
 
   <script>
-    // ====== ENCRYPTED UNKNOWNS ENDING (XOR + SHA-256 keystream) ======
+    // ========== ENCRYPTED UNKNOWNS ENDING (XOR + SHA256 KEYSTREAM) ==========
     const ciphertextBase64 =
 "zfL21jyJL0tuBLh/99TDVeUHxeW0EuUZMBjes4YoM5cW9U4wOpuC16g9Hi0XuxXnEbpew5s4H7d57dAnycwiaTHlq3dbKBTyJ+j/eACPjVjs76fgORKwNGnL\
 hI3S05ip93Aj288fn4qZn4YNMKa8vcw75I3LPvDZKmVip0181qKCFGXgsX66567PNyBqieJNdkYYWKP9iDbGV1/CvOyC5GMtxZsaQB8pRr1H7F3T1rYMlhsK\
@@ -61,6 +63,7 @@ Ec992ruoQmp+HVcjVfr4fycJkXpZfcMSW/z/LtxCMNdg4BS5S459bMEQkCcVeZ8BYQnOMePFNNIEMHAX
 Gio+6e7sUBay/tEesEmNiNUTsEF+Ek+Im2zn5CCmZHZxdQtnWEXrOGHNjn4lrI6RkdwS7VkOjqCVaOISlC1iPfx+YGid7iqpiAYsq+WRfczdcdd7WHcimWy3\
 p0M28h1qiNv4tQDHVeWwx426REYLNDK1ZPt+Cnt1o0uNpNFEf7aiwpgKnOcYoUUfFc86oA1lOmq+cZHgJehAheDboHvxHUgK8MumdTiJHGGJVBkcyo5xoTIz\
 t7UcdwRV/bn6AP8=";
+
 
     function normalizeKey(str) {
       return str.toLowerCase().trim().replace(/\s+/g, " ");
@@ -101,9 +104,11 @@ t7UcdwRV/bn6AP8=";
         const cipherBytes = base64ToBytes(ciphertextBase64);
         const ks = await makeKeystream(key, cipherBytes.length);
         const plainBytes = new Uint8Array(cipherBytes.length);
+
         for (let i = 0; i < cipherBytes.length; i++) {
           plainBytes[i] = cipherBytes[i] ^ ks[i];
         }
+
         const dec = new TextDecoder();
         const text = dec.decode(plainBytes);
 
@@ -122,10 +127,11 @@ t7UcdwRV/bn6AP8=";
     (function init() {
       const msgEl = document.getElementById("msg");
       let key = null;
+
       try {
         key = sessionStorage.getItem("unknowns_final_key");
       } catch (e) {
-        msgEl.textContent = "CANNOT ACCESS SESSION STORAGE. PATH LOCKED.";
+        msgEl.textContent = "SESSION STORAGE ERROR. PATH LOCKED.";
         return;
       }
 
@@ -139,4 +145,3 @@ t7UcdwRV/bn6AP8=";
   </script>
 </body>
 </html>
-
