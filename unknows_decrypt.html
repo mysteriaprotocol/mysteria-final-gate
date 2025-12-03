@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>UNKNOWS DECRYPT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #000;
+      color: #f55;
+      font-family: "Courier New", monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+      text-align: center;
+    }
+    .msg {
+      max-width: 700px;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="msg" id="msg">INITIALIZING UNKNOWS ENDING...</div>
+
+  <script>
+    // ====== ENCRYPTED UNKNOWS ENDING (XOR + SHA-256 keystream) ======
+    // Deze string is volledig onleesbaar zonder de juiste finale zin.
+    const ciphertextBase64 =
+"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\
+t7UcdwRV/bn6AP8=";
+
+    // Normalize key same as bij encryptie: lowercase, trim, 1 spatie
+    function normalizeKey(str) {
+      return str.toLowerCase().trim().replace(/\s+/g, " ");
+    }
+
+    async function sha256Bytes(msg) {
+      const enc = new TextEncoder();
+      const data = enc.encode(msg);
+      const hashBuf = await crypto.subtle.digest("SHA-256", data);
+      return new Uint8Array(hashBuf);
+    }
+
+    async function makeKeystream(key, length) {
+      const keyNorm = normalizeKey(key);
+      let out = [];
+      let counter = 0;
+      while (out.length < length) {
+        const chunk = await sha256Bytes(keyNorm + "|" + counter);
+        for (let b of chunk) {
+          out.push(b);
+          if (out.length === length) break;
+        }
+        counter++;
+      }
+      return new Uint8Array(out);
+    }
+
+    function base64ToBytes(b64) {
+      const bin = atob(b64);
+      const out = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+      return out;
+    }
+
+    async function decryptWithKey(key) {
+      const msgEl = document.getElementById("msg");
+      try {
+        const cipherBytes = base64ToBytes(ciphertextBase64);
+        const ks = await makeKeystream(key, cipherBytes.length);
+        const plainBytes = new Uint8Array(cipherBytes.length);
+        for (let i = 0; i < cipherBytes.length; i++) {
+          plainBytes[i] = cipherBytes[i] ^ ks[i];
+        }
+        const dec = new TextDecoder();
+        const text = dec.decode(plainBytes);
+
+        if (text.startsWith("<!DOCTYPE html>")) {
+          document.open();
+          document.write(text);
+          document.close();
+        } else {
+          msgEl.textContent = "ACCESS DENIED. WRONG PATH.";
+        }
+      } catch (e) {
+        msgEl.textContent = "DECRYPT ERROR. THE UNKNOWS REJECT YOUR KEY.";
+      }
+    }
+
+    (function init() {
+      const params = new URLSearchParams(window.location.search);
+      const k = params.get("k");
+      if (!k) {
+        document.getElementById("msg").textContent =
+          "NO KEY PROVIDED. THIS PATH IS LOCKED.";
+        return;
+      }
+      decryptWithKey(decodeURIComponent(k));
+    })();
+  </script>
+</body>
+</html>
