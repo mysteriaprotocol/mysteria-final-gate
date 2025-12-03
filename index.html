@@ -176,7 +176,7 @@
       box-shadow:0 0 8px rgba(255,255,255,0.1);
     }
     .btn-mysta { border-color:#50fa7b; }
-    .btn-unknows { border-color:#ff5555; }
+    .btn-unknowns { border-color:#ff5555; } /* corrected */
   </style>
 </head>
 
@@ -196,7 +196,7 @@
     <div class="terminal-body" id="terminalBody">
       <span class="line">INITIALIZING MYSTERIA PROTOCOL v1.0...</span>
       <span class="line">LOADING MYSTERIA ARCHIVES...[OK]</span>
-      <span class="line">LOADING UNKNOWS CONTAINMENT STATUS...[UNSTABLE]</span>
+      <span class="line">LOADING UNKNOWNS CONTAINMENT STATUS...[UNSTABLE]</span> <!-- corrected -->
       <span class="line">---</span>
       <span class="line">TO UNLOCK THE FINAL PATH, ENTER THE COMPLETE SENTENCE FROM ALL FIVE EPISODES.</span>
       <span class="line">ORDER MATTERS. LOWERCASE RECOMMENDED.</span>
@@ -217,8 +217,8 @@
   </div>
 
   <script>
-    // SHA-256 hash van de juiste finale zin
-    const correctHash = "88432fb790036cae6456c9d2aeef64c03a1f7cb6ae5ca1ca8d6cae73be995eb1";
+    const correctHash =
+      "88432fb790036cae6456c9d2aeef64c03a1f7cb6ae5ca1ca8d6cae73be995eb1";
 
     const inputField   = document.getElementById("inputField");
     const outputArea   = document.getElementById("outputArea");
@@ -257,21 +257,20 @@
       const container = document.createElement("div");
       container.classList.add("choice-buttons");
 
-      // Mysta path (nog via mail)
       const mystaLink = document.createElement("a");
       mystaLink.href = "mailto:mystapath@gmail.com?subject=MYSTA%20ENDING";
 
-      // Unknows path -> decrypt page, key via sessionStorage
-      const unknowsLink = document.createElement("a");
-      unknowsLink.href = "unknows_decrypt.html";
-      unknowsLink.target = "_blank";
-      unknowsLink.addEventListener("click", function (e) {
+      const unknownsLink = document.createElement("a");
+      unknownsLink.href = "./unknowns_decrypt.html"; /* corrected */
+      unknownsLink.target = "_blank";
+
+      unknownsLink.addEventListener("click", function (e) {
         if (!lastValidSentence) {
           e.preventDefault();
           return;
         }
         try {
-          sessionStorage.setItem("unknows_final_key", lastValidSentence);
+          sessionStorage.setItem("unknowns_final_key", lastValidSentence); /* corrected */
         } catch (err) {
           console.error("Cannot access sessionStorage", err);
         }
@@ -281,15 +280,15 @@
       mystaBtn.classList.add("btn","btn-mysta");
       mystaBtn.textContent = "ENTER MYSTA PATH";
 
-      const unknowsBtn = document.createElement("button");
-      unknowsBtn.classList.add("btn","btn-unknows");
-      unknowsBtn.textContent = "ENTER UNKNOWS PATH";
+      const unknownsBtn = document.createElement("button");
+      unknownsBtn.classList.add("btn","btn-unknowns");
+      unknownsBtn.textContent = "ENTER UNKNOWNS PATH"; /* corrected */
 
       mystaLink.appendChild(mystaBtn);
-      unknowsLink.appendChild(unknowsBtn);
+      unknownsLink.appendChild(unknownsBtn);
 
       container.appendChild(mystaLink);
-      container.appendChild(unknowsLink);
+      container.appendChild(unknownsLink);
 
       outputArea.appendChild(container);
       terminalBody.scrollTop = terminalBody.scrollHeight;
@@ -313,7 +312,10 @@
         triggerSurge();
         showChoices();
       } else {
-        appendLine('"not enough knowledge, not enough power. return when the ten words align."', "error");
+        appendLine(
+          '"not enough knowledge, not enough power. return when the ten words align."',
+          "error"
+        );
       }
 
       inputField.value = "";
