@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>UNKNOWS DECRYPT</title>
+  <title>UNKNOWNS DECRYPT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,10 +25,10 @@
   </style>
 </head>
 <body>
-  <div class="msg" id="msg">INITIALIZING UNKNOWS ENDING...</div>
+  <div class="msg" id="msg">INITIALIZING UNKNOWNS ENDING...</div>
 
   <script>
-    // ====== ENCRYPTED UNKNOWS ENDING (XOR + SHA-256 keystream) ======
+    // ====== ENCRYPTED UNKNOWNS ENDING (XOR + SHA-256 keystream) ======
     const ciphertextBase64 =
 "zfL21jyJL0tuBLh/99TDVeUHxeW0EuUZMBjes4YoM5cW9U4wOpuC16g9Hi0XuxXnEbpew5s4H7d57dAnycwiaTHlq3dbKBTyJ+j/eACPjVjs76fgORKwNGnL\
 hI3S05ip93Aj288fn4qZn4YNMKa8vcw75I3LPvDZKmVip0181qKCFGXgsX66567PNyBqieJNdkYYWKP9iDbGV1/CvOyC5GMtxZsaQB8pRr1H7F3T1rYMlhsK\
@@ -115,7 +115,7 @@ t7UcdwRV/bn6AP8=";
           msgEl.textContent = "ACCESS DENIED. WRONG PATH.";
         }
       } catch (e) {
-        msgEl.textContent = "DECRYPT ERROR. THE UNKNOWS REJECT YOUR KEY.";
+        msgEl.textContent = "DECRYPT ERROR. THE UNKNOWNS REJECT YOUR KEY.";
       }
     }
 
@@ -123,7 +123,7 @@ t7UcdwRV/bn6AP8=";
       const msgEl = document.getElementById("msg");
       let key = null;
       try {
-        key = sessionStorage.getItem("unknows_final_key");
+        key = sessionStorage.getItem("unknowns_final_key");
       } catch (e) {
         msgEl.textContent = "CANNOT ACCESS SESSION STORAGE. PATH LOCKED.";
         return;
@@ -139,3 +139,4 @@ t7UcdwRV/bn6AP8=";
   </script>
 </body>
 </html>
+
