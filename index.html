@@ -37,9 +37,9 @@
     }
 
     @keyframes flameMove {
-      0%   { transform: scale(1) translateY(0); filter: blur(20px);}
-      50%  { transform: scale(1.04) translateY(-14px); filter: blur(27px);}
-      100% { transform: scale(1.02) translateY(8px); filter: blur(20px);}
+      0%   { transform: scale(1) translateY(0);    filter: blur(20px); }
+      50%  { transform: scale(1.04) translateY(-14px); filter: blur(27px); }
+      100% { transform: scale(1.02) translateY(8px);   filter: blur(20px); }
     }
 
     /* GLITCH LOGO */
@@ -59,31 +59,31 @@
       transform: translateX(-50%);
       z-index: 0;
     }
-
     .mysta-glitch-top { top: -40px; }
     .mysta-glitch-bottom { bottom: -40px; }
 
     @keyframes mystaGlitch {
-      0% { opacity: 0.04; transform: translateX(-50%) scale(1);}
-      6% { opacity: 0.02; transform: translate(calc(-50% - 2px)) scale(1.05);}
-      7% { opacity: 0.08; transform: translate(calc(-50% + 2px)) scale(1.01);}
-      8% { opacity: 0.03; transform: translateX(-50%) scale(1);}
-      55% { opacity: 0.07; transform: translateX(-50%) scale(1.02);}
-      56% { opacity: 0.01; transform: translate(calc(-50% - 3px)) scale(1.04);}
-      57% { opacity: 0.06; transform: translate(calc(-50% + 3px)) scale(1.01);}
-      58% { opacity: 0.03; transform: translateX(-50%) scale(1);}
-      100%{ opacity: 0.04; transform: translateX(-50%) scale(1);}
+      0%   { opacity: 0.04; transform: translateX(-50%) scale(1); }
+      6%   { opacity: 0.02; transform: translate(calc(-50% - 2px)) scale(1.05); }
+      7%   { opacity: 0.08; transform: translate(calc(-50% + 2px)) scale(1.01); }
+      8%   { opacity: 0.03; transform: translateX(-50%) scale(1); }
+      55%  { opacity: 0.07; transform: translateX(-50%) scale(1.02); }
+      56%  { opacity: 0.01; transform: translate(calc(-50% - 3px)) scale(1.04); }
+      57%  { opacity: 0.06; transform: translate(calc(-50% + 3px)) scale(1.01); }
+      58%  { opacity: 0.03; transform: translateX(-50%) scale(1); }
+      100% { opacity: 0.04; transform: translateX(-50%) scale(1); }
     }
 
-    .mysta-glitch-top.surge, .mysta-glitch-bottom.surge {
+    .mysta-glitch-top.surge,
+    .mysta-glitch-bottom.surge {
       animation: mystaGlitch 6s infinite, mystaSurge 0.9s ease-out;
     }
 
     @keyframes mystaSurge {
-      0% { opacity: 0.15; filter: blur(0) brightness(1.1); transform: scale(1.0);}
-      30%{ opacity: 0.5; filter: blur(2px) brightness(1.5); transform: scale(1.2);}
-      60%{ opacity: 0.25; filter: blur(1px) brightness(1.2); transform: scale(1.08);}
-      100%{ opacity: 0.04; filter: blur(1px) brightness(1); transform: scale(1.0);}
+      0%   { opacity: 0.15; filter: blur(0) brightness(1.1); transform: translateX(-50%) scale(1.0); }
+      30%  { opacity: 0.5;  filter: blur(2px) brightness(1.5); transform: translateX(-50%) scale(1.2); }
+      60%  { opacity: 0.25; filter: blur(1px) brightness(1.2); transform: translateX(-50%) scale(1.08); }
+      100% { opacity: 0.04; filter: blur(1px) brightness(1);   transform: translateX(-50%) scale(1.0); }
     }
 
     /* TERMINAL WINDOW */
@@ -110,11 +110,10 @@
       text-transform: uppercase;
     }
 
-    .dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-    }
-    .red{background:#ff5f57;} .yellow{background:#ffbd2e;} .green{background:#28c840;}
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .red { background:#ff5f57; }
+    .yellow { background:#ffbd2e; }
+    .green { background:#28c840; }
 
     .terminal-body {
       padding: 16px;
@@ -123,10 +122,39 @@
       overflow-y: auto;
     }
 
-    .line{display:block;margin-bottom:4px;}
-    .error{color:#ff5555;} .success{color:#50fa7b;}
+    .line { display:block; margin-bottom:4px; }
+    .error { color:#ff5555; }
+    .success { color:#50fa7b; }
 
-    .choice-buttons { margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
+    .prompt-line { display:flex; align-items:center; margin-top:12px; }
+    .prompt-line span { margin-right: 8px; }
+
+    #inputField {
+      flex:1;
+      background:transparent;
+      border:none;
+      outline:none;
+      color:#e2e2e2;
+      font-family:inherit;
+      font-size:inherit;
+    }
+
+    #inputField::placeholder { color:#555; }
+
+    .cursor {
+      display:inline-block;
+      width:8px;
+      margin-left:2px;
+      animation: blink 1s step-start infinite;
+    }
+    @keyframes blink { 50% { opacity:0; } }
+
+    .choice-buttons {
+      margin-top:12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
 
     .btn {
       border:1px solid #444;
@@ -139,12 +167,16 @@
       font-size:13px;
       text-transform:uppercase;
       letter-spacing:0.08em;
-      transition:0.2s;
+      transition:background 0.2s, border-color 0.2s, transform 0.1s, box-shadow 0.1s;
     }
-    .btn:hover{background:#1c1c1c;border-color:#888;}
-
-    .btn-mysta{border-color:#50fa7b;}
-    .btn-unknows{border-color:#ff5555;}
+    .btn:hover {
+      background:#1c1c1c;
+      border-color:#888;
+      transform:translateY(-1px);
+      box-shadow:0 0 8px rgba(255,255,255,0.1);
+    }
+    .btn-mysta { border-color:#50fa7b; }
+    .btn-unknows { border-color:#ff5555; }
   </style>
 </head>
 
@@ -185,34 +217,36 @@
   </div>
 
   <script>
+    // SHA-256 hash van de juiste finale zin
     const correctHash = "88432fb790036cae6456c9d2aeef64c03a1f7cb6ae5ca1ca8d6cae73be995eb1";
 
-    const inputField = document.getElementById("inputField");
-    const outputArea = document.getElementById("outputArea");
+    const inputField   = document.getElementById("inputField");
+    const outputArea   = document.getElementById("outputArea");
     const terminalBody = document.getElementById("terminalBody");
-    const glitchTop = document.querySelector(".mysta-glitch-top");
+    const glitchTop    = document.querySelector(".mysta-glitch-top");
     const glitchBottom = document.querySelector(".mysta-glitch-bottom");
 
     let lastValidSentence = null;
 
     async function sha256Hex(message) {
-      const msgUint8 = new TextEncoder().encode(message);
-      const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
+      const bytes = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", bytes);
       return Array.from(new Uint8Array(hashBuffer))
         .map(b => b.toString(16).padStart(2,"0")).join("");
     }
 
     function appendLine(text, cssClass) {
-      const el = document.createElement("span");
-      el.classList.add("line");
-      if(cssClass) el.classList.add(cssClass);
-      el.textContent = text;
-      outputArea.appendChild(el);
+      const line = document.createElement("span");
+      line.classList.add("line");
+      if (cssClass) line.classList.add(cssClass);
+      line.textContent = text;
+      outputArea.appendChild(line);
       terminalBody.scrollTop = terminalBody.scrollHeight;
     }
 
     function triggerSurge() {
-      [glitchTop, glitchBottom].forEach(el=>{
+      [glitchTop, glitchBottom].forEach(el => {
+        if (!el) return;
         el.classList.remove("surge");
         void el.offsetWidth;
         el.classList.add("surge");
@@ -223,24 +257,33 @@
       const container = document.createElement("div");
       container.classList.add("choice-buttons");
 
+      // Mysta path (nog via mail)
       const mystaLink = document.createElement("a");
       mystaLink.href = "mailto:mystapath@gmail.com?subject=MYSTA%20ENDING";
 
+      // Unknows path -> decrypt page, key via sessionStorage
       const unknowsLink = document.createElement("a");
-      if (lastValidSentence) {
-        unknowsLink.href = "unknows_decrypt.html?k=" + encodeURIComponent(lastValidSentence);
-      } else {
-        unknowsLink.href = "#";
-      }
+      unknowsLink.href = "unknows_decrypt.html";
       unknowsLink.target = "_blank";
+      unknowsLink.addEventListener("click", function (e) {
+        if (!lastValidSentence) {
+          e.preventDefault();
+          return;
+        }
+        try {
+          sessionStorage.setItem("unknows_final_key", lastValidSentence);
+        } catch (err) {
+          console.error("Cannot access sessionStorage", err);
+        }
+      });
 
       const mystaBtn = document.createElement("button");
-      mystaBtn.textContent = "ENTER MYSTA PATH";
       mystaBtn.classList.add("btn","btn-mysta");
+      mystaBtn.textContent = "ENTER MYSTA PATH";
 
       const unknowsBtn = document.createElement("button");
-      unknowsBtn.textContent = "ENTER UNKNOWS PATH";
       unknowsBtn.classList.add("btn","btn-unknows");
+      unknowsBtn.textContent = "ENTER UNKNOWS PATH";
 
       mystaLink.appendChild(mystaBtn);
       unknowsLink.appendChild(unknowsBtn);
@@ -269,7 +312,6 @@
         appendLine("---", "success");
         triggerSurge();
         showChoices();
-
       } else {
         appendLine('"not enough knowledge, not enough power. return when the ten words align."', "error");
       }
@@ -277,15 +319,15 @@
       inputField.value = "";
     }
 
-    inputField.addEventListener("keydown", e=>{
-      if(e.key==="Enter"){
+    inputField.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
         e.preventDefault();
         handleInput();
       }
     });
 
-    window.addEventListener("load",()=>inputField.focus());
-    terminalBody.addEventListener("click",()=>inputField.focus());
+    window.addEventListener("load", () => inputField.focus());
+    terminalBody.addEventListener("click", () => inputField.focus());
   </script>
 
 </body>
