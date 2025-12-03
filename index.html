@@ -6,11 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: radial-gradient(circle at top, #111 0, #000 45%);
@@ -24,120 +20,80 @@
       position: relative;
     }
 
-    /* SMOOTH FLAME BACKGROUND (Phoenix Compatible) */
+    /* SMOOTH FLAME BACKGROUND */
     body::before {
       content: "";
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       pointer-events: none;
       z-index: -1;
-
       background:
-        /* blauwe gloed links */
-        radial-gradient(circle at 10% 50%,
-          rgba(50, 80, 200, 0.35),
-          rgba(20, 40, 90, 0.25),
-          rgba(0, 0, 0, 0) 60%),
-
-        /* rode gloed rechts */
-        radial-gradient(circle at 90% 50%,
-          rgba(200, 60, 60, 0.35),
-          rgba(80, 20, 20, 0.25),
-          rgba(0, 0, 0, 0) 60%),
-
-        /* zachte menglaag onderaan (paars/rood) */
-        radial-gradient(circle at 50% 110%,
-          rgba(90, 30, 70, 0.25),
-          rgba(0, 0, 0, 0) 70%);
-
-      background-size: cover;
+        radial-gradient(circle at 10% 50%, rgba(50,80,200,0.35), rgba(20,40,90,0.25), transparent 60%),
+        radial-gradient(circle at 90% 50%, rgba(200,60,60,0.35), rgba(80,20,20,0.25), transparent 60%),
+        radial-gradient(circle at 50% 110%, rgba(90,30,70,0.25), transparent 70%);
       opacity: 0.45;
       filter: blur(20px);
       animation: flameMove 18s ease-in-out infinite alternate;
     }
 
     @keyframes flameMove {
-      0% {
-        transform: scale(1) translateY(0px);
-        filter: blur(20px);
-      }
-      50% {
-        transform: scale(1.04) translateY(-14px);
-        filter: blur(27px);
-      }
-      100% {
-        transform: scale(1.02) translateY(8px);
-        filter: blur(20px);
-      }
+      0%   { transform: scale(1) translateY(0); filter: blur(20px);}
+      50%  { transform: scale(1.04) translateY(-14px); filter: blur(27px);}
+      100% { transform: scale(1.02) translateY(8px); filter: blur(20px);}
     }
 
-    /* --- MULTI-POSITION MYSTERIA LOGO GLITCH EFFECT --- */
-    .mysta-glitch-top,
-    .mysta-glitch-bottom {
+    /* GLITCH LOGO */
+    .mysta-glitch-top, .mysta-glitch-bottom {
       position: fixed;
       left: 50%;
       width: 260px;
       height: 260px;
-      background-image: url('mysteria_logo.png'); /* transparante PNG met logo */
+      background-image: url('mysteria_logo.png');
       background-size: contain;
-      background-repeat: no-repeat;
       background-position: center;
+      background-repeat: no-repeat;
       opacity: 0.04;
       pointer-events: none;
       filter: blur(1px);
       animation: mystaGlitch 6s infinite;
-      z-index: 0;
       transform: translateX(-50%);
+      z-index: 0;
     }
 
-    .mysta-glitch-top {
-      top: -40px;
+    .mysta-glitch-top { top: -40px; }
+    .mysta-glitch-bottom { bottom: -40px; }
+
+    @keyframes mystaGlitch {
+      0% { opacity: 0.04; transform: translateX(-50%) scale(1);}
+      6% { opacity: 0.02; transform: translate(calc(-50% - 2px)) scale(1.05);}
+      7% { opacity: 0.08; transform: translate(calc(-50% + 2px)) scale(1.01);}
+      8% { opacity: 0.03; transform: translateX(-50%) scale(1);}
+      55% { opacity: 0.07; transform: translateX(-50%) scale(1.02);}
+      56% { opacity: 0.01; transform: translate(calc(-50% - 3px)) scale(1.04);}
+      57% { opacity: 0.06; transform: translate(calc(-50% + 3px)) scale(1.01);}
+      58% { opacity: 0.03; transform: translateX(-50%) scale(1);}
+      100%{ opacity: 0.04; transform: translateX(-50%) scale(1);}
     }
 
-    .mysta-glitch-bottom {
-      bottom: -40px;
-    }
-
-    /* extra surge-animatie wanneer het juiste antwoord wordt gegeven */
-    .mysta-glitch-top.surge,
-    .mysta-glitch-bottom.surge {
+    .mysta-glitch-top.surge, .mysta-glitch-bottom.surge {
       animation: mystaGlitch 6s infinite, mystaSurge 0.9s ease-out;
     }
 
-    @keyframes mystaGlitch {
-      0%   { opacity: 0.04; transform: translateX(-50%) scale(1); filter: blur(1px); }
-      5%   { opacity: 0.07; transform: translateX(-50%) scale(1.03); }
-      6%   { opacity: 0.02; transform: translate(calc(-50% - 2px)) scale(1.05); filter: blur(2px); }
-      7%   { opacity: 0.08; transform: translate(calc(-50% + 2px)) scale(1.01); }
-      8%   { opacity: 0.03; transform: translateX(-50%) scale(1); filter: blur(3px); }
-
-      55%  { opacity: 0.07; transform: translateX(-50%) scale(1.02); }
-      56%  { opacity: 0.01; transform: translate(calc(-50% - 3px)) scale(1.04); filter: blur(2px); }
-      57%  { opacity: 0.06; transform: translate(calc(-50% + 3px)) scale(1.01); }
-      58%  { opacity: 0.03; transform: translateX(-50%) scale(1); }
-
-      100% { opacity: 0.04; transform: translateX(-50%) scale(1); filter: blur(1px); }
-    }
-
     @keyframes mystaSurge {
-      0%   { opacity: 0.15; filter: blur(0) brightness(1.1); transform: translateX(-50%) scale(1.0); }
-      30%  { opacity: 0.5;  filter: blur(2px) brightness(1.5); transform: translateX(-50%) scale(1.2); }
-      60%  { opacity: 0.25; filter: blur(1px) brightness(1.2); transform: translateX(-50%) scale(1.08); }
-      100% { opacity: 0.04; filter: blur(1px) brightness(1);   transform: translateX(-50%) scale(1.0); }
+      0% { opacity: 0.15; filter: blur(0) brightness(1.1); transform: scale(1.0);}
+      30%{ opacity: 0.5; filter: blur(2px) brightness(1.5); transform: scale(1.2);}
+      60%{ opacity: 0.25; filter: blur(1px) brightness(1.2); transform: scale(1.08);}
+      100%{ opacity: 0.04; filter: blur(1px) brightness(1); transform: scale(1.0);}
     }
 
-    /* --- TERMINAL BOX --- */
+    /* TERMINAL WINDOW */
     .terminal-wrapper {
       width: 90%;
       max-width: 800px;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0,0,0,0.9);
       border-radius: 8px;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
       border: 1px solid #333;
-      overflow: hidden;
+      box-shadow: 0 0 30px #000;
       z-index: 10;
     }
 
@@ -149,113 +105,54 @@
       gap: 8px;
       border-bottom: 1px solid #333;
       font-size: 12px;
+      color: #888;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #888;
     }
 
     .dot {
-      width: 10px;
-      height: 10px;
+      width: 10px; height: 10px;
       border-radius: 50%;
     }
-    .red { background: #ff5f57; }
-    .yellow { background: #ffbd2e; }
-    .green { background: #28c840; }
+    .red{background:#ff5f57;} .yellow{background:#ffbd2e;} .green{background:#28c840;}
 
     .terminal-body {
       padding: 16px;
       font-size: 14px;
-      line-height: 1.5;
       max-height: calc(100vh - 120px);
       overflow-y: auto;
     }
 
-    .line {
-      display: block;
-      margin-bottom: 4px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
+    .line{display:block;margin-bottom:4px;}
+    .error{color:#ff5555;} .success{color:#50fa7b;}
 
-    .prompt-line {
-      display: flex;
-      align-items: center;
-      margin-top: 12px;
-    }
-
-    .prompt-prefix {
-      margin-right: 8px;
-    }
-
-    #inputField {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: #e2e2e2;
-      font-family: inherit;
-      font-size: inherit;
-    }
-
-    #inputField::placeholder {
-      color: #555;
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 8px;
-      margin-left: 2px;
-      animation: blink 1s step-start infinite;
-    }
-
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-
-    .error { color: #ff5555; }
-    .success { color: #50fa7b; }
-
-    .choice-buttons {
-      margin-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    .choice-buttons { margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
 
     .btn {
-      border: 1px solid #444;
-      padding: 6px 12px;
-      border-radius: 4px;
-      background: #111;
-      color: #e2e2e2;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: background 0.2s, transform 0.1s, box-shadow 0.1s, border-color 0.2s;
+      border:1px solid #444;
+      padding:6px 12px;
+      border-radius:4px;
+      background:#111;
+      color:#e2e2e2;
+      cursor:pointer;
+      font-family:inherit;
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      transition:0.2s;
     }
+    .btn:hover{background:#1c1c1c;border-color:#888;}
 
-    .btn:hover {
-      background: #1c1c1c;
-      transform: translateY(-1px);
-      border-color: #888;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
-    }
-
-    .btn-mysta { border-color: #50fa7b; }
-    .btn-unknows { border-color: #ff5555; }
+    .btn-mysta{border-color:#50fa7b;}
+    .btn-unknows{border-color:#ff5555;}
   </style>
 </head>
 
 <body>
 
-  <!-- MYSTERIA LOGO GLITCH BOVEN & ONDER -->
   <div class="mysta-glitch-top"></div>
   <div class="mysta-glitch-bottom"></div>
 
-  <!-- TERMINAL UI -->
   <div class="terminal-wrapper">
     <div class="terminal-header">
       <div class="dot red"></div>
@@ -274,11 +171,11 @@
       <span class="line">---</span>
 
       <div class="prompt-line">
-        <span class="prompt-prefix">&gt; ENTER THE FINAL SENTENCE:</span>
+        <span>&gt; ENTER THE FINAL SENTENCE:</span>
       </div>
 
       <div class="prompt-line">
-        <span class="prompt-prefix">&gt;</span>
+        <span>&gt;</span>
         <input id="inputField" type="text" autocomplete="off" placeholder="type here and press ENTER..." />
         <span class="cursor">█</span>
       </div>
@@ -288,39 +185,36 @@
   </div>
 
   <script>
-    // SHA-256 hash van de juiste zin (in hex)
     const correctHash = "88432fb790036cae6456c9d2aeef64c03a1f7cb6ae5ca1ca8d6cae73be995eb1";
 
-    const inputField   = document.getElementById("inputField");
-    const outputArea   = document.getElementById("outputArea");
+    const inputField = document.getElementById("inputField");
+    const outputArea = document.getElementById("outputArea");
     const terminalBody = document.getElementById("terminalBody");
-    const glitchTop    = document.querySelector(".mysta-glitch-top");
+    const glitchTop = document.querySelector(".mysta-glitch-top");
     const glitchBottom = document.querySelector(".mysta-glitch-bottom");
 
-    let lastValidSentence = null; // slaat de juiste finale zin op
+    let lastValidSentence = null;
 
-    // Helper: string -> sha256 hex (met Web Crypto API)
     async function sha256Hex(message) {
-      const msgUint8   = new TextEncoder().encode(message);
+      const msgUint8 = new TextEncoder().encode(message);
       const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
-      const hashArray  = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+      return Array.from(new Uint8Array(hashBuffer))
+        .map(b => b.toString(16).padStart(2,"0")).join("");
     }
 
     function appendLine(text, cssClass) {
-      const line = document.createElement("span");
-      line.classList.add("line");
-      if (cssClass) line.classList.add(cssClass);
-      line.textContent = text;
-      outputArea.appendChild(line);
+      const el = document.createElement("span");
+      el.classList.add("line");
+      if(cssClass) el.classList.add(cssClass);
+      el.textContent = text;
+      outputArea.appendChild(el);
       terminalBody.scrollTop = terminalBody.scrollHeight;
     }
 
     function triggerSurge() {
-      [glitchTop, glitchBottom].forEach((el) => {
-        if (!el) return;
+      [glitchTop, glitchBottom].forEach(el=>{
         el.classList.remove("surge");
-        void el.offsetWidth; // force reflow zodat animatie opnieuw start
+        void el.offsetWidth;
         el.classList.add("surge");
       });
     }
@@ -334,20 +228,19 @@
 
       const unknowsLink = document.createElement("a");
       if (lastValidSentence) {
-        const encoded = encodeURIComponent(lastValidSentence);
-        unknowsLink.href = "unknows_decrypt.html?k=" + encoded;
+        unknowsLink.href = "unknows_decrypt.html?k=" + encodeURIComponent(lastValidSentence);
       } else {
         unknowsLink.href = "#";
       }
       unknowsLink.target = "_blank";
 
       const mystaBtn = document.createElement("button");
-      mystaBtn.classList.add("btn", "btn-mysta");
       mystaBtn.textContent = "ENTER MYSTA PATH";
+      mystaBtn.classList.add("btn","btn-mysta");
 
       const unknowsBtn = document.createElement("button");
-      unknowsBtn.classList.add("btn", "btn-unknows");
       unknowsBtn.textContent = "ENTER UNKNOWS PATH";
+      unknowsBtn.classList.add("btn","btn-unknows");
 
       mystaLink.appendChild(mystaBtn);
       unknowsLink.appendChild(unknowsBtn);
@@ -369,13 +262,14 @@
       const enteredHash = await sha256Hex(normalized);
 
       if (enteredHash === correctHash) {
-        lastValidSentence = normalized; // belangrijke lijn
+        lastValidSentence = normalized;
 
         appendLine("> ACCESS GRANTED.", "success");
         appendLine("> THE PATH IS NOW OPEN.", "success");
         appendLine("---", "success");
         triggerSurge();
         showChoices();
+
       } else {
         appendLine('"not enough knowledge, not enough power. return when the ten words align."', "error");
       }
@@ -383,15 +277,15 @@
       inputField.value = "";
     }
 
-    inputField.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") {
+    inputField.addEventListener("keydown", e=>{
+      if(e.key==="Enter"){
         e.preventDefault();
         handleInput();
       }
     });
 
-    window.addEventListener("load", () => inputField.focus());
-    terminalBody.addEventListener("click", () => inputField.focus());
+    window.addEventListener("load",()=>inputField.focus());
+    terminalBody.addEventListener("click",()=>inputField.focus());
   </script>
 
 </body>
