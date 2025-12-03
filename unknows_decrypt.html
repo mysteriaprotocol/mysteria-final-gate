@@ -29,7 +29,6 @@
 
   <script>
     // ====== ENCRYPTED UNKNOWS ENDING (XOR + SHA-256 keystream) ======
-    // Deze string is volledig onleesbaar zonder de juiste finale zin.
     const ciphertextBase64 =
 "zfL21jyJL0tuBLh/99TDVeUHxeW0EuUZMBjes4YoM5cW9U4wOpuC16g9Hi0XuxXnEbpew5s4H7d57dAnycwiaTHlq3dbKBTyJ+j/eACPjVjs76fgORKwNGnL\
 hI3S05ip93Aj288fn4qZn4YNMKa8vcw75I3LPvDZKmVip0181qKCFGXgsX66567PNyBqieJNdkYYWKP9iDbGV1/CvOyC5GMtxZsaQB8pRr1H7F3T1rYMlhsK\
@@ -63,7 +62,6 @@ Gio+6e7sUBay/tEesEmNiNUTsEF+Ek+Im2zn5CCmZHZxdQtnWEXrOGHNjn4lrI6RkdwS7VkOjqCVaOIS
 p0M28h1qiNv4tQDHVeWwx426REYLNDK1ZPt+Cnt1o0uNpNFEf7aiwpgKnOcYoUUfFc86oA1lOmq+cZHgJehAheDboHvxHUgK8MumdTiJHGGJVBkcyo5xoTIz\
 t7UcdwRV/bn6AP8=";
 
-    // Normalize key same as bij encryptie: lowercase, trim, 1 spatie
     function normalizeKey(str) {
       return str.toLowerCase().trim().replace(/\s+/g, " ");
     }
@@ -77,7 +75,7 @@ t7UcdwRV/bn6AP8=";
 
     async function makeKeystream(key, length) {
       const keyNorm = normalizeKey(key);
-      let out = [];
+      const out = [];
       let counter = 0;
       while (out.length < length) {
         const chunk = await sha256Bytes(keyNorm + "|" + counter);
@@ -122,14 +120,21 @@ t7UcdwRV/bn6AP8=";
     }
 
     (function init() {
-      const params = new URLSearchParams(window.location.search);
-      const k = params.get("k");
-      if (!k) {
-        document.getElementById("msg").textContent =
-          "NO KEY PROVIDED. THIS PATH IS LOCKED.";
+      const msgEl = document.getElementById("msg");
+      let key = null;
+      try {
+        key = sessionStorage.getItem("unknows_final_key");
+      } catch (e) {
+        msgEl.textContent = "CANNOT ACCESS SESSION STORAGE. PATH LOCKED.";
         return;
       }
-      decryptWithKey(decodeURIComponent(k));
+
+      if (!key) {
+        msgEl.textContent = "NO KEY PROVIDED. THIS PATH IS LOCKED.";
+        return;
+      }
+
+      decryptWithKey(key);
     })();
   </script>
 </body>
