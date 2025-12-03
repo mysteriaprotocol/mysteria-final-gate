@@ -23,6 +23,56 @@
       overflow: hidden;
       position: relative;
     }
+/* SMOOTH FLAME BACKGROUND (Phoenix Compatible) */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+
+  background:
+    /* blauwe gloed links */
+    radial-gradient(circle at 10% 50%,
+      rgba(50, 80, 200, 0.35),
+      rgba(20, 40, 90, 0.25),
+      rgba(0, 0, 0, 0) 60%),
+
+    /* rode gloed rechts */
+    radial-gradient(circle at 90% 50%,
+      rgba(200, 60, 60, 0.35),
+      rgba(80, 20, 20, 0.25),
+      rgba(0, 0, 0, 0) 60%),
+
+    /* zachte menglaag onderaan (paars/rood) */
+    radial-gradient(circle at 50% 110%,
+      rgba(90, 30, 70, 0.25),
+      rgba(0, 0, 0, 0) 70%);
+
+  background-size: cover;
+  opacity: 0.45;
+  filter: blur(20px);
+  animation: flameMove 18s ease-in-out infinite alternate;
+}
+
+@keyframes flameMove {
+  0% {
+    transform: scale(1) translateY(0px);
+    filter: blur(20px);
+  }
+  50% {
+    transform: scale(1.04) translateY(-14px);
+    filter: blur(27px);
+  }
+  100% {
+    transform: scale(1.02) translateY(8px);
+    filter: blur(20px);
+  }
+}
+
 
     /* --- MULTI-POSITION MYSTERIA LOGO GLITCH EFFECT --- */
     .mysta-glitch-top,
