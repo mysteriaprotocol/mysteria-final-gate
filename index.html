@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mysteria Final Gate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #111 0, #000 45%);
+      color: #e2e2e2;
+      font-family: "Courier New", monospace;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* --- MULTI-POSITION MYSTERIA LOGO GLITCH EFFECT --- */
+    .mysta-glitch-top,
+    .mysta-glitch-bottom {
+      position: fixed;
+      left: 50%;
+      width: 260px;
+      height: 260px;
+      background-image: url('mysteria_logo.png'); /* transparante PNG met logo */
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.04;
+      pointer-events: none;
+      filter: blur(1px);
+      animation: mystaGlitch 6s infinite;
+      z-index: 0;
+      transform: translateX(-50%);
+    }
+
+    .mysta-glitch-top {
+      top: -40px;
+    }
+
+    .mysta-glitch-bottom {
+      bottom: -40px;
+    }
+
+    /* extra surge-animatie wanneer het juiste antwoord wordt gegeven */
+    .mysta-glitch-top.surge,
+    .mysta-glitch-bottom.surge {
+      animation: mystaGlitch 6s infinite, mystaSurge 0.9s ease-out;
+    }
+
+    @keyframes mystaGlitch {
+      0%   { opacity: 0.04; transform: translateX(-50%) scale(1); filter: blur(1px); }
+      5%   { opacity: 0.07; transform: translateX(-50%) scale(1.03); }
+      6%   { opacity: 0.02; transform: translate(calc(-50% - 2px)) scale(1.05); filter: blur(2px); }
+      7%   { opacity: 0.08; transform: translate(calc(-50% + 2px)) scale(1.01); }
+      8%   { opacity: 0.03; transform: translateX(-50%) scale(1); filter: blur(3px); }
+
+      55%  { opacity: 0.07; transform: translateX(-50%) scale(1.02); }
+      56%  { opacity: 0.01; transform: translate(calc(-50% - 3px)) scale(1.04); filter: blur(2px); }
+      57%  { opacity: 0.06; transform: translate(calc(-50% + 3px)) scale(1.01); }
+      58%  { opacity: 0.03; transform: translateX(-50%) scale(1); }
+
+      100% { opacity: 0.04; transform: translateX(-50%) scale(1); filter: blur(1px); }
+    }
+
+    @keyframes mystaSurge {
+      0%   { opacity: 0.15; filter: blur(0) brightness(1.1); transform: translateX(-50%) scale(1.0); }
+      30%  { opacity: 0.5;  filter: blur(2px) brightness(1.5); transform: translateX(-50%) scale(1.2); }
+      60%  { opacity: 0.25; filter: blur(1px) brightness(1.2); transform: translateX(-50%) scale(1.08); }
+      100% { opacity: 0.04; filter: blur(1px) brightness(1);   transform: translateX(-50%) scale(1.0); }
+    }
+
+    /* --- TERMINAL BOX --- */
+    .terminal-wrapper {
+      width: 90%;
+      max-width: 800px;
+      background: rgba(0, 0, 0, 0.9);
+      border-radius: 8px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+      border: 1px solid #333;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .terminal-header {
+      background: linear-gradient(to right, #222, #111);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #333;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .red { background: #ff5f57; }
+    .yellow { background: #ffbd2e; }
+    .green { background: #28c840; }
+
+    .terminal-body {
+      padding: 16px;
+      font-size: 14px;
+      line-height: 1.5;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+
+    .line {
+      display: block;
+      margin-bottom: 4px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .prompt-line {
+      display: flex;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .prompt-prefix {
+      margin-right: 8px;
+    }
+
+    #inputField {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #e2e2e2;
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    #inputField::placeholder {
+      color: #555;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      margin-left: 2px;
+      animation: blink 1s step-start infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .error { color: #ff5555; }
+    .success { color: #50fa7b; }
+
+    .choice-buttons {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn {
+      border: 1px solid #444;
+      padding: 6px 12px;
+      border-radius: 4px;
+      background: #111;
+      color: #e2e2e2;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.1s, border-color 0.2s;
+    }
+
+    .btn:hover {
+      background: #1c1c1c;
+      transform: translateY(-1px);
+      border-color: #888;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-mysta { border-color: #50fa7b; }
+    .btn-unknows { border-color: #ff5555; }
+  </style>
+</head>
+
+<body>
+
+  <!-- MYSTERIA LOGO GLITCH BOVEN & ONDER -->
+  <div class="mysta-glitch-top"></div>
+  <div class="mysta-glitch-bottom"></div>
+
+  <!-- TERMINAL UI -->
+  <div class="terminal-wrapper">
+    <div class="terminal-header">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+      <span>MYSTERIA_PROTOCOL:// FINAL_GATE</span>
+    </div>
+
+    <div class="terminal-body" id="terminalBody">
+      <span class="line">INITIALIZING MYSTERIA PROTOCOL v1.0...</span>
+      <span class="line">LOADING MYSTERIA ARCHIVES...[OK]</span>
+      <span class="line">LOADING UNKNOWS CONTAINMENT STATUS...[UNSTABLE]</span>
+      <span class="line">---</span>
+      <span class="line">TO UNLOCK THE FINAL PATH, ENTER THE COMPLETE SENTENCE FROM ALL FIVE EPISODES.</span>
+      <span class="line">ORDER MATTERS. LOWERCASE RECOMMENDED.</span>
+      <span class="line">---</span>
+
+      <div class="prompt-line">
+        <span class="prompt-prefix">&gt; ENTER THE FINAL SENTENCE:</span>
+      </div>
+
+      <div class="prompt-line">
+        <span class="prompt-prefix">&gt;</span>
+        <input id="inputField" type="text" autocomplete="off" placeholder="type here and press ENTER..." />
+        <span class="cursor">█</span>
+      </div>
+
+      <div id="outputArea"></div>
+    </div>
+  </div>
+
+  <script>
+    // SHA-256 hash van de juiste zin (in hex)
+    const correctHash = "88432fb790036cae6456c9d2aeef64c03a1f7cb6ae5ca1ca8d6cae73be995eb1";
+
+    const inputField   = document.getElementById("inputField");
+    const outputArea   = document.getElementById("outputArea");
+    const terminalBody = document.getElementById("terminalBody");
+    const glitchTop    = document.querySelector(".mysta-glitch-top");
+    const glitchBottom = document.querySelector(".mysta-glitch-bottom");
+
+    // Helper: string -> sha256 hex (met Web Crypto API)
+    async function sha256Hex(message) {
+      const msgUint8   = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
+      const hashArray  = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    function appendLine(text, cssClass) {
+      const line = document.createElement("span");
+      line.classList.add("line");
+      if (cssClass) line.classList.add(cssClass);
+      line.textContent = text;
+      outputArea.appendChild(line);
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+    }
+
+    function triggerSurge() {
+      [glitchTop, glitchBottom].forEach((el) => {
+        if (!el) return;
+        el.classList.remove("surge");
+        void el.offsetWidth; // force reflow zodat animatie opnieuw start
+        el.classList.add("surge");
+      });
+    }
+
+    function showChoices() {
+      const container = document.createElement("div");
+      container.classList.add("choice-buttons");
+
+      const mystaLink = document.createElement("a");
+      mystaLink.href = "mailto:mystapath@gmail.com?subject=MYSTA%20ENDING";
+
+      const unknowsLink = document.createElement("a");
+      unknowsLink.href = "mailto:unknownpath@gmail.com?subject=UNKNOWNS%20ENDING";
+
+      const mystaBtn = document.createElement("button");
+      mystaBtn.classList.add("btn", "btn-mysta");
+      mystaBtn.textContent = "ENTER MYSTA PATH";
+
+      const unknowsBtn = document.createElement("button");
+      unknowsBtn.classList.add("btn", "btn-unknows");
+      unknowsBtn.textContent = "ENTER UNKNOWS PATH";
+
+      mystaLink.appendChild(mystaBtn);
+      unknowsLink.appendChild(unknowsBtn);
+
+      container.appendChild(mystaLink);
+      container.appendChild(unknowsLink);
+
+      outputArea.appendChild(container);
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+    }
+
+    async function handleInput() {
+      const value = inputField.value.trim();
+      if (!value) return;
+
+      appendLine("> " + value);
+
+      const normalized = value.toLowerCase();
+      const enteredHash = await sha256Hex(normalized);
+
+      if (enteredHash === correctHash) {
+        appendLine("> ACCESS GRANTED.", "success");
+        appendLine("> THE PATH IS NOW OPEN.", "success");
+        appendLine("---", "success");
+        triggerSurge();
+        showChoices();
+      } else {
+        appendLine('"not enough knowledge, not enough power. return when the ten words align."', "error");
+      }
+
+      inputField.value = "";
+    }
+
+    inputField.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleInput();
+      }
+    });
+
+    window.addEventListener("load", () => inputField.focus());
+    terminalBody.addEventListener("click", () => inputField.focus());
+  </script>
+
+</body>
+</html>
