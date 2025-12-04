@@ -265,26 +265,13 @@
       const container = document.createElement("div");
       container.classList.add("choice-buttons");
 
-      // MYSTA path (mail)
+      // MYSTA path → eigen ending pagina
       const mystaLink = document.createElement("a");
-      mystaLink.href = "mailto:mystapath@gmail.com?subject=MYSTA%20ENDING";
+      mystaLink.href = "./mysta_ending.html";
 
-      // UNKNOWNS path → decrypt page, key via sessionStorage
+      // UNKNOWNS path → bestaande ending pagina
       const unknownsLink = document.createElement("a");
-      unknownsLink.href = "./unknowns_decrypt.html"; // zelfde tab, dus storage blijft
-
-      unknownsLink.addEventListener("click", function (e) {
-        if (!lastValidSentence) {
-          e.preventDefault();
-          return;
-        }
-        try {
-          // key-naam matcht decrypt-pagina
-          sessionStorage.setItem("unknowns_final_key", lastValidSentence);
-        } catch (err) {
-          console.error("Cannot access sessionStorage", err);
-        }
-      });
+      unknownsLink.href = "./unknowns_decrypt.html";
 
       const mystaBtn = document.createElement("button");
       mystaBtn.classList.add("btn", "btn-mysta");
