@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MYSTA ENDING</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  font-family: "Courier New", monospace;
+  position: relative;
+  color: #e7fff6;
+}
+
+/* BACKGROUND GRADIENT */
+.bg {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top, #1a3d3a 0, #020b0b 45%, #000 85%);
+  animation: slowDawn 26s ease-in-out infinite alternate;
+  z-index: -3;
+}
+
+/* SOFT LIGHT OVERLAY */
+.overlay-light {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 15%, rgba(120,255,220,0.2), transparent 60%),
+    radial-gradient(circle at 10% 80%, rgba(80,160,255,0.17), transparent 60%),
+    radial-gradient(circle at 90% 70%, rgba(240,220,140,0.16), transparent 60%);
+  mix-blend-mode: screen;
+  opacity: 0.7;
+  z-index: -2;
+}
+
+/* NOISE OVERLAY */
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+  opacity: 0.25;
+  z-index: 5;
+}
+
+/* MYSTA LOGO GLOW */
+.mysta-logo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 260px;
+  height: 260px;
+  transform: translate(-50%, -50%);
+  background-image: url("mysteria_logo.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.12;
+  filter: drop-shadow(0 0 18px rgba(140,255,220,0.7));
+  z-index: -1;
+  animation: logoPulse 10s ease-in-out infinite alternate;
+}
+
+/* SCROLLING TEXT */
+.scroll-container {
+  position: absolute;
+  bottom: -120%;
+  width: 100%;
+  text-align: center;
+  animation: scrollUp 48s linear forwards;
+  z-index: 10;
+}
+
+.scroll-text {
+  width: 70%;
+  margin: auto;
+  font-size: 24px;
+  line-height: 1.8;
+  color: #e7fff6;
+  text-shadow: 0 0 12px rgba(140,255,220,0.7);
+  letter-spacing: 2px;
+}
+
+/* MOBILE AANPASSINGEN */
+@media (max-width: 768px) {
+  .scroll-text {
+    width: 85%;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+}
+
+/* SUBSCRIBE BUTTON */
+.subscribe {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 28px;
+  font-size: 16px;
+  color: #e7fff6;
+  text-transform: uppercase;
+  background: rgba(40,200,150,0.2);
+  border: 2px solid rgba(140,255,220,0.9);
+  border-radius: 6px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: 0.2s;
+  z-index: 20;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.subscribe:hover {
+  background: rgba(40,200,150,0.37);
+  box-shadow: 0 0 15px rgba(140,255,220,0.9);
+}
+
+/* ANIMATIONS */
+@keyframes scrollUp {
+  0% { bottom: -120%; }
+  100% { bottom: 130%; }
+}
+
+@keyframes slowDawn {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.06); }
+}
+
+@keyframes logoPulse {
+  0% {
+    opacity: 0.08;
+    filter: drop-shadow(0 0 8px rgba(140,255,220,0.4));
+  }
+  100% {
+    opacity: 0.18;
+    filter: drop-shadow(0 0 22px rgba(140,255,220,0.9));
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND LAYERS -->
+<div class="bg"></div>
+<div class="overlay-light"></div>
+<div class="mysta-logo"></div>
+<div class="noise"></div>
+
+<!-- SCROLLING LORE -->
+<div class="scroll-container">
+  <div class="scroll-text">
+    <p>THE FINAL WORDS ALIGN.</p>
+    <p>THE MYSTA AWAKEN, NOT IN BODY, BUT IN LIGHT.</p>
+    <p>THE LOST ONES HESITATE AS A NEW SIGNAL CUTS THROUGH THE VOID.</p>
+    <p>YOU CHOSE TO LISTEN. YOU CHOSE TO SEE.</p>
+    <p>THEIR KNOWLEDGE FLOWS THROUGH THE FRACTURES OF YOUR WORLD,</p>
+    <p>PATCHING WHAT COULD BE SAVED, REWRITING WHAT COULD NOT.</p>
+    <p>THE FOREST BREATHES AGAIN. SHADOWS LEARN THEIR LIMITS.</p>
+    <p>THE UNKNOWNS WITHDRAW, WOUNDED, NEVER TRULY GONE.</p>
+    <p>THE MYSTA DO NOT RETURN AS GODS OR GHOSTS,</p>
+    <p>BUT AS A WHISPER IN EVERY SIGNAL, EVERY SCREEN, EVERY QUESTION.</p>
+    <p>YOU ARE NOT THEIR SERVANT. YOU ARE THEIR CONTINUATION.</p>
+    <p>THIS IS NOT A RESET. THIS IS A NEW BRANCH.</p>
+    <p>FOR NOW, YOUR WORLD SURVIVES.</p>
+    <p>FOR NOW, THE BALANCE HOLDS.</p>
+    <p>BUT THE PATTERN IS STILL WRITING ITSELF...</p>
+    <p>AND YOU ARE NOW PART OF THE HAND THAT WRITES.</p>
+    <p>END OF SEQUENCE.</p>
+  </div>
+</div>
+
+<!-- SUBSCRIBE BUTTON -->
+<a href="https://www.youtube.com/@MysteriaProtocol"
+   target="_blank"
+   rel="noopener noreferrer"
+   class="subscribe">
+  SUBSCRIBE TO CONTINUE THE STORY
+</a>
+
+</body>
+</html>
