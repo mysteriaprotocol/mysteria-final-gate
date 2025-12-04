@@ -262,21 +262,9 @@ body {
 
 <div class="noise"></div>
 
-<!-- STAR WARS STYLE SCROLL -->
+<!-- STAR WARS STYLE SCROLL (WORDT GEVULD VIA JS) -->
 <div class="scroll-container">
-  <div class="scroll-text">
-    <p>THE UNKNOWNS HAVE BEEN RELEASED.</p>
-    <p>THE LOST ONES STEP FORWARD, EYES EMPTY, WILL ABSOLUTE.</p>
-    <p>THE FOREST HOLDS ITS BREATH AS THEY GATHER AROUND YOU.</p>
-    <p>YOU WALKED THEIR PATH. YOU OPENED THE DOOR THEY COULD NOT.</p>
-    <p>THE MYSTA WILL NOT RISE AGAIN.</p>
-    <p>THEIR LIGHT FADES. YOUR WORLD FOLLOWS.</p>
-    <p>THE VOID SPREADS. HOPE COLLAPSES.</p>
-    <p>THERE IS NO RETURN.</p>
-    <p>THE UNKNOWNS THANK YOU FOR YOUR OBEDIENCE.</p>
-    <p>ALL THAT REMAINS… IS SILENCE.</p>
-    <p>END OF LINE.</p>
-  </div>
+  <div class="scroll-text"></div>
 </div>
 
 <!-- SUBSCRIBE BUTTON -->
@@ -288,14 +276,90 @@ body {
 </a>
 
 <script>
+  // Versleutelde UNKNOWNS-tekst (met "OK|" prefix)
+  const ENCRYPTED_UNKNOWNS =
+    "xwhT49hGTPsqHYed+aE34HJeKvOOHuSPw0z8NvLcH+LNBwG9xEspjigZmoaOoCqFaT8v4usMgYzCPvky" +
+    "7N1ykc0aauSwRiH+MA/l8vmmKIwaXj7l4RD0nshCpCf23H73xxFq5MQjJOEoEpry57s34HhNOff6FIGL" +
+    "3kz6O/vAfvbJF2fywiMt/CsDh5aOtiuVFBUl+ft89ovBJ+s3ns0W9MERD+fRVySARA+Gh46gNIV0WjiW" +
+    "+hTk6skj4SGezRb00WNs+MVPKI4qGZ38pLsshRpSJeX6HYGdxCDiU/DWCpHaCnzysEIr7y0Y59j6pyGJ" +
+    "aD8w/+kU9erLLeo27bd+6McWfZfHTD7iIHaPneKjK5dpMXbi5hmBnMIl6lPtyQz0yQd8mbBLI/4hdoqd" +
+    "4qMlkGlaL5ikCOmP3ymOOu25EP6oEWrjxVEigG4CgZeOuiqLdFAr+P189YLMIuVT59YLkc4MfZfJTDn8" +
+    "RBmLl+qmIY55WlK87xDt6tkk7yeeyxv8yQph5HKDyo4tBemB56MhjnlaUrzrEuXqwiqOP/fXG58=";
+
+  function getTokenFromQuery() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("k") || "";
+  }
+
+  function hexToBytes(hex) {
+    if (!hex || hex.length % 2 !== 0) return null;
+    const bytes = [];
+    for (let i = 0; i < hex.length; i += 2) {
+      bytes.push(parseInt(hex.substr(i, 2), 16));
+    }
+    return bytes;
+  }
+
+  function decryptEnding(encB64, keyHex) {
+    try {
+      if (!keyHex || keyHex.length !== 64) return null;
+      const keyBytes = hexToBytes(keyHex);
+      if (!keyBytes) return null;
+
+      const binStr = atob(encB64);
+      const out = [];
+
+      for (let i = 0; i < binStr.length; i++) {
+        const encByte = binStr.charCodeAt(i);
+        const plainByte = encByte ^ keyBytes[i % keyBytes.length];
+        out.push(String.fromCharCode(plainByte));
+      }
+      return out.join("");
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function showDenied() {
+    const scroll = document.querySelector(".scroll-text");
+    if (scroll) {
+      scroll.innerHTML =
+        "<p>ACCESS DENIED.</p><p>CORRUPTED OR INCOMPLETE PATH.</p>";
+    }
+  }
+
+  function initUnknownsEnding() {
+    const token = getTokenFromQuery();
+    const plain = decryptEnding(ENCRYPTED_UNKNOWNS, token);
+
+    if (!plain || !plain.startsWith("OK|")) {
+      showDenied();
+      return;
+    }
+
+    const body = plain.slice(3);
+    const lines = body.split("\n");
+    const scroll = document.querySelector(".scroll-text");
+    if (!scroll) return;
+
+    scroll.innerHTML = lines
+      .map(line => "<p>" + line + "</p>")
+      .join("");
+  }
+
+  initUnknownsEnding();
+
   // Na 10 seconden: één klik ergens op de pagina = replay
   setTimeout(() => {
-    document.body.addEventListener("click", () => {
-      location.reload();
-    }, { once: true });
+    document.body.addEventListener(
+      "click",
+      () => {
+        location.reload();
+      },
+      { once: true }
+    );
   }, 10000);
 </script>
 
 </body>
 </html>
-
