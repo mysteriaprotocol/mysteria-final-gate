@@ -18,15 +18,16 @@
       justify-content: center;
       overflow: hidden;
       position: relative;
+      perspective: 1000px;
     }
 
-    /* SMOOTH FLAME BACKGROUND */
+    /* SOFT COLOR "FLAMES" OP ACHTERGROND */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: -1;
+      z-index: -2;
       background:
         radial-gradient(circle at 10% 50%, rgba(50,80,200,0.35), rgba(20,40,90,0.25), transparent 60%),
         radial-gradient(circle at 90% 50%, rgba(200,60,60,0.35), rgba(80,20,20,0.25), transparent 60%),
@@ -40,6 +41,46 @@
       0%   { transform: scale(1) translateY(0);        filter: blur(20px); }
       50%  { transform: scale(1.04) translateY(-14px); filter: blur(27px); }
       100% { transform: scale(1.02) translateY(8px);   filter: blur(20px); }
+    }
+
+    /* GRAIN / CRT NOISE */
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.13;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+      animation: grainShift 7s linear infinite alternate;
+    }
+
+    @keyframes grainShift {
+      0%   { transform: translate3d(0,0,0); }
+      100% { transform: translate3d(-20px, 12px, 0); }
+    }
+
+    /* SCANLINE OVERLAY */
+    .scanline {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.04) 1px,
+        transparent 2px,
+        transparent 3px
+      );
+      opacity: 0.09;
+      mix-blend-mode: soft-light;
+      animation: scanMove 4s linear infinite;
+    }
+
+    @keyframes scanMove {
+      0%   { transform: translateY(-15px); }
+      100% { transform: translateY(15px); }
     }
 
     /* GLITCH LOGO */
@@ -58,6 +99,7 @@
       animation: mystaGlitch 6s infinite;
       transform: translateX(-50%);
       z-index: 0;
+      mix-blend-mode: screen;
     }
 
     .mysta-glitch-top { top: -40px; }
@@ -91,11 +133,28 @@
     .terminal-wrapper {
       width: 90%;
       max-width: 800px;
-      background: rgba(0,0,0,0.9);
-      border-radius: 8px;
-      border: 1px solid #333;
-      box-shadow: 0 0 30px #000;
+      background: radial-gradient(circle at top, rgba(15,15,15,0.98), rgba(3,3,3,0.98));
+      border-radius: 10px;
+      border: 1px solid rgba(245,85,85,0.45);
+      box-shadow:
+        0 0 35px rgba(0,0,0,0.95),
+        0 0 40px rgba(245,85,85,0.18);
       z-index: 10;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .terminal-wrapper::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 0 0, rgba(245,85,85,0.18), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(90,60,200,0.18), transparent 60%);
+      opacity: 0.4;
+      mix-blend-mode: screen;
     }
 
     .terminal-header {
@@ -109,9 +168,11 @@
       color: #888;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+      position: relative;
+      z-index: 1;
     }
 
-    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 6px rgba(0,0,0,0.8); }
     .red    { background:#ff5f57; }
     .yellow { background:#ffbd2e; }
     .green  { background:#28c840; }
@@ -121,9 +182,14 @@
       font-size: 14px;
       max-height: calc(100vh - 120px);
       overflow-y: auto;
+      position: relative;
+      z-index: 1;
     }
 
-    .line { display:block; margin-bottom:4px; }
+    .line {
+      display:block;
+      margin-bottom:4px;
+    }
     .error   { color:#ff5555; }
     .success { color:#50fa7b; }
 
@@ -131,8 +197,10 @@
       display:flex;
       align-items:center;
       margin-top:12px;
+      gap: 4px;
     }
-    .prompt-line span { margin-right: 8px; }
+
+    .prompt-line span { margin-right: 0; }
 
     #inputField {
       flex:1;
@@ -152,6 +220,7 @@
       margin-left:2px;
       animation: blink 1s step-start infinite;
     }
+
     @keyframes blink { 50% { opacity:0; } }
 
     .choice-buttons {
@@ -172,8 +241,13 @@
       font-size:13px;
       text-transform:uppercase;
       letter-spacing:0.08em;
-      transition:background 0.2s, border-color 0.2s, transform 0.1s, box-shadow 0.1s;
+      transition:
+        background 0.2s,
+        border-color 0.2s,
+        transform 0.1s,
+        box-shadow 0.1s;
     }
+
     .btn:hover {
       background:#1c1c1c;
       border-color:#888;
@@ -181,12 +255,25 @@
       box-shadow:0 0 8px rgba(255,255,255,0.1);
     }
 
-    .btn-mysta    { border-color:#50fa7b; }
-    .btn-unknowns { border-color:#ff5555; }
+    .btn-mysta    { border-color:#50fa7b; color:#b2ffd0; }
+    .btn-unknowns { border-color:#ff5555; color:#ffc7c7; }
+
+    @media (max-width: 600px) {
+      .terminal-body {
+        font-size: 13px;
+        padding: 12px;
+      }
+      .terminal-header {
+        font-size: 11px;
+      }
+    }
   </style>
 </head>
 
 <body>
+
+  <div class="grain"></div>
+  <div class="scanline"></div>
 
   <div class="mysta-glitch-top"></div>
   <div class="mysta-glitch-bottom"></div>
@@ -271,7 +358,7 @@
 
       // UNKNOWNS path → unknowns_decrypt.html
       const unknownsLink = document.createElement("a");
-      unknownsLink.href = "./unknowns_decrypt.html";
+      unknownsLink.href = "./unknows_decrypt.html";
 
       const mystaBtn = document.createElement("button");
       mystaBtn.classList.add("btn", "btn-mysta");
