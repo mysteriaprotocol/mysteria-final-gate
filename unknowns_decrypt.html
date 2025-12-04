@@ -97,7 +97,7 @@ t7UcdwRV/bn6AP8=";
     }
 
     async function decryptWithKey(key, msgEl) {
-      msgEl.textContent = "STEP 3: DECRYPTING...";
+      msgEl.textContent = "DECRYPTING...";
       try {
         const cipherBytes = base64ToBytes(ciphertextBase64);
         const ks = await makeKeystream(key, cipherBytes.length);
@@ -108,14 +108,18 @@ t7UcdwRV/bn6AP8=";
         const dec = new TextDecoder();
         const text = dec.decode(plainBytes);
 
-        if (text.startsWith("<!DOCTYPE html>")) {
-          msgEl.textContent = "STEP 4: LOADING ENDING...";
-          document.open();
-          document.write(text);
-          document.close();
-        } else {
-          msgEl.textContent = "ACCESS DENIED. WRONG PATH.";
+        // In plaats van document.write: hele document vervangen
+        if (text.trim().length === 0) {
+          msgEl.textContent = "DECRYPT FAILED. EMPTY RESULT.";
+          return;
         }
+
+        // Toon even dat we zover geraakt zijn (debug)
+        msgEl.textContent = "LOADING ENDING...";
+
+        // Vervang de volledige HTML van de pagina
+        document.documentElement.innerHTML = text;
+
       } catch (e) {
         msgEl.textContent = "DECRYPT ERROR. THE UNKNOWNS REJECT YOUR KEY.";
       }
@@ -123,22 +127,20 @@ t7UcdwRV/bn6AP8=";
 
     (function init() {
       const msgEl = document.getElementById("msg");
-      msgEl.textContent = "STEP 1: SCRIPT LOADED.";
 
       let key = null;
       try {
         key = sessionStorage.getItem("unknowns_final_key");
       } catch (e) {
-        msgEl.textContent = "STEP 1.5: SESSION STORAGE ERROR. PATH LOCKED.";
+        msgEl.textContent = "SESSION STORAGE ERROR. PATH LOCKED.";
         return;
       }
 
       if (!key) {
-        msgEl.textContent = "STEP 2: NO KEY PROVIDED. THIS PATH IS LOCKED.";
+        msgEl.textContent = "NO KEY PROVIDED. THIS PATH IS LOCKED.";
         return;
       }
 
-      msgEl.textContent = "STEP 2: KEY FOUND. DECRYPTING...";
       decryptWithKey(key, msgEl);
     })();
   </script>
