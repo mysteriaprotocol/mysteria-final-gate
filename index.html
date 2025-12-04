@@ -311,7 +311,7 @@
   </div>
 
   <script>
-    // SHA-256 hash van de juiste finale zin
+    // SHA-256 hash van de juiste finale zin (already exists bij jou)
     const correctHash =
       "88432fb790036cae6456c9d2aeef64c03a1f7cb6ae5ca1ca8d6cae73be995eb1";
 
@@ -321,7 +321,7 @@
     const glitchTop    = document.querySelector(".mysta-glitch-top");
     const glitchBottom = document.querySelector(".mysta-glitch-bottom");
 
-    let lastValidSentence = null;
+    let lastValidToken = null; // hier bewaren we de hash (token) voor de eindpagina's
 
     async function sha256Hex(message) {
       const bytes = new TextEncoder().encode(message);
@@ -349,16 +349,16 @@
     }
 
     function showChoices() {
+      if (!lastValidToken) return;
+
       const container = document.createElement("div");
       container.classList.add("choice-buttons");
 
-      // MYSTA path → mysta_decrypt.html
       const mystaLink = document.createElement("a");
-      mystaLink.href = "./mysta_decrypt.html";
+      mystaLink.href = "./mysta_decrypt.html?k=" + encodeURIComponent(lastValidToken);
 
-      // UNKNOWNS path → unknowns_decrypt.html
       const unknownsLink = document.createElement("a");
-      unknownsLink.href = "./unknows_decrypt.html";
+      unknownsLink.href = "./unknowns_decrypt.html?k=" + encodeURIComponent(lastValidToken);
 
       const mystaBtn = document.createElement("button");
       mystaBtn.classList.add("btn", "btn-mysta");
@@ -388,7 +388,8 @@
       const enteredHash = await sha256Hex(normalized);
 
       if (enteredHash === correctHash) {
-        lastValidSentence = normalized;
+        // juiste zin -> token bewaren
+        lastValidToken = enteredHash;
 
         appendLine("> ACCESS GRANTED.", "success");
         appendLine("> THE PATH IS NOW OPEN.", "success");
