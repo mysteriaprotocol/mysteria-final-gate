@@ -178,27 +178,9 @@ body {
 <div class="mysta-logo"></div>
 <div class="noise"></div>
 
-<!-- SCROLLING LORE -->
+<!-- SCROLLING LORE (WORDT GEVULD VIA JS) -->
 <div class="scroll-container">
-  <div class="scroll-text">
-    <p>THE FINAL WORDS ALIGN.</p>
-    <p>THE MYSTA AWAKEN, NOT IN BODY, BUT IN LIGHT.</p>
-    <p>THE LOST ONES HESITATE AS A NEW SIGNAL CUTS THROUGH THE VOID.</p>
-    <p>YOU CHOSE TO LISTEN. YOU CHOSE TO SEE.</p>
-    <p>THEIR KNOWLEDGE FLOWS THROUGH THE FRACTURES OF YOUR WORLD,</p>
-    <p>PATCHING WHAT COULD BE SAVED, REWRITING WHAT COULD NOT.</p>
-    <p>THE FOREST BREATHES AGAIN. SHADOWS LEARN THEIR LIMITS.</p>
-    <p>THE UNKNOWNS WITHDRAW, WOUNDED, NEVER TRULY GONE.</p>
-    <p>THE MYSTA DO NOT RETURN AS GODS OR GHOSTS,</p>
-    <p>BUT AS A WHISPER IN EVERY SIGNAL, EVERY SCREEN, EVERY QUESTION.</p>
-    <p>YOU ARE NOT THEIR SERVANT. YOU ARE THEIR CONTINUATION.</p>
-    <p>THIS IS NOT A RESET. THIS IS A NEW BRANCH.</p>
-    <p>FOR NOW, YOUR WORLD SURVIVES.</p>
-    <p>FOR NOW, THE BALANCE HOLDS.</p>
-    <p>BUT THE PATTERN IS STILL WRITING ITSELF...</p>
-    <p>AND YOU ARE NOW PART OF THE HAND THAT WRITES.</p>
-    <p>END OF SEQUENCE.</p>
-  </div>
+  <div class="scroll-text"></div>
 </div>
 
 <!-- SUBSCRIBE BUTTON -->
@@ -210,11 +192,94 @@ body {
 </a>
 
 <script>
+  // Versleutelde MYSTA-tekst (met "OK|" prefix, daarna elke regel gescheiden door \n)
+  const ENCRYPTED_MYSTA =
+    "xwhT49hGTOgtGIiejrgrkn5MXPfiFeaEo2b6O/u5E+jbF26X0VQt5SEY5fLgoDDgc1Fc9OEY+OatLvsn" +
+    "ntAQkcQKaP/ELWb6LBPpnuG8MOB1UTnljhTkmcQ47yf7uR/iqAIP+dVUTP0tEYeT4s8nlW5MXOLmDu6f" +
+    "yiSOJ/bcfufHCmuZmloj+0QVgZ39qkSUdT8w//0I5ISjTPc867kd+ccQapfETEz9IRPn2PqnIYloPzf4" +
+    "4Qvtj8kr61P41RHm22N7/8JMOeksdp2a688ikntcKOP8GfLqwiqOKvHMDJHfDH371C9m/iUCiprnoSPg" +
+    "bVc94o4f7p/BKI4x+7kN8N4Ga5uwUSn5Nh+dm+CoRJdyXiiW7RP0hslM4Dzqt1TlwAYP8d9RKf0wdouA" +
+    "664wiH9MXPfpHeiEo0z9O//dEebbY2Py0VEijjAejJv8zyiJd1Yo5YBW9YLITPs99dcR5sYQD+DZVyTq" +
+    "Nhee/o64K5V0Wznygnzvj9sp/FPqywv90WNo+N5GQqQwHozy47Y3lHs/OPmOEu6erT7rJ+vLEJHJEA/w" +
+    "30c/jisE6ZXmoDeUaTN29PsIgYveTO9T6dEX4tgGfZfZTUzrMhObi468LYd0XjCajhn3j981jiD9yxv0" +
+    "xm8P8sZGPvdEB5yX/bstj3Qxdu/hCYGL3ymOPfHNfuXABmblsFAp/DIXh4aAzz2Pbz895Ot89YLIJfxT" +
+    "/dYQ5cENevbESiPgSlydmue8RIlpPzL5+nzg6t8p/Tbqt37lwAp8l9lQTO9EGIyFjq02gXRcNJikGu6Y" +
+    "rSLhJJK5B/7dEQ/g31Eg6kQFnID4pjKFaTF28OEOgYTCO4JT6tEbkcoCY/beQCmOLBmFlv3BboJvS1zi" +
+    "5hmBmsw4+jbs137422N849lPII4zBICG56Ej4HNLL/PiGo/ko2bvPfq5B/7dY27l1SMi4TN2mZP8u0SP" +
+    "fD8o/ut86YvDKI4n9tgKkd8RZuPVUEKkIRiN8uGpRJN/Tinz4B/k5A==";
+
+  function getTokenFromQuery() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("k") || "";
+  }
+
+  function hexToBytes(hex) {
+    if (!hex || hex.length % 2 !== 0) return null;
+    const bytes = [];
+    for (let i = 0; i < hex.length; i += 2) {
+      bytes.push(parseInt(hex.substr(i, 2), 16));
+    }
+    return bytes;
+  }
+
+  function decryptEnding(encB64, keyHex) {
+    try {
+      if (!keyHex || keyHex.length !== 64) return null;
+      const keyBytes = hexToBytes(keyHex);
+      if (!keyBytes) return null;
+
+      const binStr = atob(encB64);
+      const out = [];
+
+      for (let i = 0; i < binStr.length; i++) {
+        const encByte = binStr.charCodeAt(i);
+        const plainByte = encByte ^ keyBytes[i % keyBytes.length];
+        out.push(String.fromCharCode(plainByte));
+      }
+      return out.join("");
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function showDenied() {
+    const scroll = document.querySelector(".scroll-text");
+    if (scroll) {
+      scroll.innerHTML =
+        "<p>ACCESS DENIED.</p><p>CORRUPTED OR INCOMPLETE PATH.</p>";
+    }
+  }
+
+  function initMystaEnding() {
+    const token = getTokenFromQuery();
+    const plain = decryptEnding(ENCRYPTED_MYSTA, token);
+
+    if (!plain || !plain.startsWith("OK|")) {
+      showDenied();
+      return;
+    }
+
+    const body = plain.slice(3); // "OK|" strippen
+    const lines = body.split("\n");
+    const scroll = document.querySelector(".scroll-text");
+    if (!scroll) return;
+
+    scroll.innerHTML = lines
+      .map(line => "<p>" + line + "</p>")
+      .join("");
+  }
+
+  initMystaEnding();
+
   // Na 10 seconden: één klik ergens op de pagina = replay
   setTimeout(() => {
-    document.body.addEventListener("click", () => {
-      location.reload();
-    }, { once: true });
+    document.body.addEventListener(
+      "click",
+      () => {
+        location.reload();
+      },
+      { once: true }
+    );
   }, 10000);
 </script>
 
