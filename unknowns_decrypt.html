@@ -146,16 +146,19 @@ body {
   z-index: 5;
 }
 
-/* SCROLLING TEXT – MET PERSPECTIEF / TILT */
+/* SCROLLING TEXT – MET PERSPECTIEF / TILT + FADE-IN */
 .scroll-container {
   position: absolute;
   bottom: -130%;
   width: 100%;
   text-align: center;
-  animation: scrollUp 48s linear forwards;
+  animation:
+    scrollUp 48s linear forwards,
+    fadeInScroll 3s ease-out forwards;
   z-index: 10;
   transform-origin: center bottom;
   transform: rotateX(23deg) translateZ(0);
+  opacity: 0;
 }
 
 .scroll-text {
@@ -182,12 +185,12 @@ body {
   }
 }
 
-/* SUBSCRIBE BUTTON */
+/* SUBSCRIBE BUTTON – DELAYED FADE-IN */
 .subscribe {
   position: fixed;
   bottom: 30px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(10px);
   padding: 12px 28px;
   font-size: 14px;
   color: #ffdede;
@@ -204,6 +207,10 @@ body {
   align-items: center;
   justify-content: center;
   letter-spacing: 0.18em;
+
+  opacity: 0;
+  animation: revealButton 3s ease-out forwards;
+  animation-delay: 6s;
 }
 
 .subscribe:hover {
@@ -218,6 +225,11 @@ body {
   100% { bottom: 130%; }
 }
 
+@keyframes fadeInScroll {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
 @keyframes pulseHaze {
   0%   { opacity: 0.25; }
   100% { opacity: 0.45; }
@@ -226,6 +238,11 @@ body {
 @keyframes slowZoom {
   0%   { transform: scale(1); }
   100% { transform: scale(1.07); }
+}
+
+@keyframes revealButton {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 </style>
 </head>
@@ -269,6 +286,15 @@ body {
    class="subscribe">
   SUBSCRIBE TO CONTINUE THE SEARCH
 </a>
+
+<script>
+  // Na 10 seconden: één klik ergens op de pagina = replay
+  setTimeout(() => {
+    document.body.addEventListener("click", () => {
+      location.reload();
+    }, { once: true });
+  }, 10000);
+</script>
 
 </body>
 </html>
