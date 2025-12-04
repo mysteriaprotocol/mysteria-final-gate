@@ -269,7 +269,7 @@
       const mystaLink = document.createElement("a");
       mystaLink.href = "./mysta_decrypt.html";
 
-      // UNKNOWNS path → bestaande ending pagina
+      // UNKNOWNS path → unknowns_decrypt.html
       const unknownsLink = document.createElement("a");
       unknownsLink.href = "./unknowns_decrypt.html";
 
@@ -283,3 +283,51 @@
 
       mystaLink.appendChild(mystaBtn);
       unknownsLink.appendChild(unknownsBtn);
+
+      container.appendChild(mystaLink);
+      container.appendChild(unknownsLink);
+
+      outputArea.appendChild(container);
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+    }
+
+    async function handleInput() {
+      const value = inputField.value.trim();
+      if (!value) return;
+
+      appendLine("> " + value);
+
+      const normalized = value.toLowerCase();
+      const enteredHash = await sha256Hex(normalized);
+
+      if (enteredHash === correctHash) {
+        lastValidSentence = normalized;
+
+        appendLine("> ACCESS GRANTED.", "success");
+        appendLine("> THE PATH IS NOW OPEN.", "success");
+        appendLine("---", "success");
+        triggerSurge();
+        showChoices();
+      } else {
+        appendLine(
+          '"not enough knowledge, not enough power. return when the ten words align."',
+          "error"
+        );
+      }
+
+      inputField.value = "";
+    }
+
+    inputField.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleInput();
+      }
+    });
+
+    window.addEventListener("load", () => inputField.focus());
+    terminalBody.addEventListener("click", () => inputField.focus());
+  </script>
+
+</body>
+</html>
